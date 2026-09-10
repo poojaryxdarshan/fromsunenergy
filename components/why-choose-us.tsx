@@ -71,13 +71,13 @@ export function WhyChooseUs() {
 
           {/* Section Main Title */}
           <h2 className="mt-3 text-3xl font-bold text-foreground text-balance sm:text-4xl lg:text-5xl">
-            The SolarVolt Advantage
+            The FromSun Energy Advantage
           </h2>
 
           {/* Section Description */}
           <p className="mt-4 text-lg text-muted-foreground">
             We go beyond just installing panels. Here is why thousands of
-            customers trust SolarVolt for their energy needs.
+            customers trust FromSun for their energy needs.
           </p>
         </motion.div>
 
