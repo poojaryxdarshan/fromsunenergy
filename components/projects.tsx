@@ -4,47 +4,47 @@ import { motion } from "framer-motion"
 import { MapPin, Zap } from "lucide-react"
 import Image from "next/image"
 
-// Data array containing project portfolio metadata
+// Data array containing Indian project portfolio metadata
 const projects = [
   {
     image: "/images/project-1.jpg",
     title: "Luxury Villa Installation",
-    location: "Beverly Hills, CA",
+    location: "Bengaluru, Karnataka",
     capacity: "15 KW",
     type: "Residential",
   },
   {
     image: "/images/project-2.jpg",
-    title: "Ranch Farm Solar Setup",
-    location: "Austin, TX",
+    title: "Estate Farm Solar Setup",
+    location: "Kochi, Kerala",
     capacity: "120 KW",
     type: "Agricultural",
   },
   {
     image: "/images/project-3.jpg",
-    title: "Office Complex Rooftop",
-    location: "Denver, CO",
-    capacity: "85 KW",
+    title: "IT Park Rooftop Array",
+    location: "Hyderabad, Telangana",
+    capacity: "150 KW",
     type: "Commercial",
   },
   {
     image: "/images/commercial-solar.jpg",
-    title: "Warehouse Power Grid",
-    location: "Phoenix, AZ",
-    capacity: "200 KW",
+    title: "Logistics Hub Power Grid",
+    location: "Bhiwandi, Mumbai",
+    capacity: "250 KW",
     type: "Industrial",
   },
   {
     image: "/images/residential-solar.jpg",
-    title: "Suburban Home Array",
-    location: "San Diego, CA",
+    title: "Suburban Villa Microgrid",
+    location: "New Town, Kolkata",
     capacity: "10 KW",
     type: "Residential",
   },
   {
     image: "/images/industrial-solar.jpg",
-    title: "Solar Farm Project",
-    location: "Las Vegas, NV",
+    title: "Mega Solar Park Project",
+    location: "Pavagada, Karnataka",
     capacity: "500 KW",
     type: "Utility",
   },
@@ -71,13 +71,13 @@ export function Projects() {
 
           {/* Headline */}
           <h2 className="mt-3 text-3xl font-bold text-white text-balance sm:text-4xl lg:text-5xl">
-            Recent Installations
+            Recent Installations Across India
           </h2>
 
           {/* Subtitle */}
           <p className="mt-4 text-lg text-white/60">
             Browse through our portfolio of successful solar installations
-            across the country.
+            powering homes, businesses, and industries nationwide.
           </p>
         </motion.div>
 
