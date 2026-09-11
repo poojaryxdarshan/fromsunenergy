@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Send, Phone, Mail, MapPin, Clock } from "lucide-react"
+import { Send, Phone, Mail, MapPin, Clock, Loader2, CheckCircle } from "lucide-react"
 import { FaWhatsapp } from "react-icons/fa6"
 
 interface ContactItem {
@@ -51,7 +51,8 @@ const contactInfo: ContactItem[] = [
 ]
 
 export function Contact() {
-  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle")
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -65,20 +66,30 @@ export function Contact() {
     setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
+    setStatus("idle")
 
-    const mailtoUrl = `mailto:info@fromsunenergy.com?subject=${encodeURIComponent(
-      `New Contact Inquiry from ${formData.name}`
-    )}&body=${encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\n\nMessage:\n${formData.message}`
-    )}`
+    try {
+      const response = await fetch("/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
 
-    window.location.href = mailtoUrl
-
-    setSubmitted(true)
-    setFormData({ name: "", email: "", phone: "", message: "" })
-    setTimeout(() => setSubmitted(false), 4000)
+      if (response.ok) {
+        setStatus("success")
+        setFormData({ name: "", email: "", phone: "", message: "" })
+      } else {
+        setStatus("error")
+      }
+    } catch (error) {
+      setStatus("error")
+    } finally {
+      setLoading(false)
+      setTimeout(() => setStatus("idle"), 5000)
+    }
   }
 
   return (
@@ -156,7 +167,7 @@ export function Contact() {
               onSubmit={handleSubmit}
               className="flex h-full flex-col justify-between rounded-2xl bg-card p-6 shadow-sm md:p-8"
             >
-              {/* Top/Middle Wrapper: Uses `flex-1` to occupy full height between top & bottom button */}
+              {/* Form Input Container */}
               <div className="flex flex-1 flex-col">
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
@@ -212,7 +223,7 @@ export function Contact() {
                   </div>
                 </div>
 
-                {/* Message Field Container: `flex-1` stretches it to fill remaining space */}
+                {/* Message Field */}
                 <div className="mt-5 flex flex-1 flex-col">
                   <label
                     htmlFor="message"
@@ -220,7 +231,6 @@ export function Contact() {
                   >
                     Message
                   </label>
-                  {/* Textarea `h-full min-h-[140px]` ensures it stretches seamlessly to the button */}
                   <textarea
                     id="message"
                     required
@@ -232,16 +242,31 @@ export function Contact() {
                 </div>
               </div>
 
-              {/* Submit Button locked at the bottom */}
+              {/* Submission Status Message */}
+              {status === "error" && (
+                <p className="mt-4 text-sm font-medium text-red-500">
+                  Failed to send message. Please try again later.
+                </p>
+              )}
+
+              {/* Submit Button */}
               <motion.button
                 type="submit"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-solar-amber px-8 py-4 text-base font-semibold text-solar-navy transition-colors hover:bg-solar-amber-light disabled:opacity-60"
-                disabled={submitted}
+                disabled={loading || status === "success"}
               >
-                {submitted ? (
-                  "Thank you! Opening your email app..."
+                {loading ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    Sending...
+                  </>
+                ) : status === "success" ? (
+                  <>
+                    <CheckCircle className="h-5 w-5 text-green-700" />
+                    Message Sent Successfully!
+                  </>
                 ) : (
                   <>
                     <Send className="h-5 w-5" />
